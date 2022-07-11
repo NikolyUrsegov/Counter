@@ -1,0 +1,17 @@
+.counterBlock {
+    display: flex;
+    width: 80%;
+    height: 40%;
+    margin: 20px auto;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: rgb(99, 218, 252);
+    border-radius: 10px;
+    border: 3px solid rgb(99, 218, 252);
+
+}
+.counterMax {
+    font-size: 70px;
+    color: red;
+}

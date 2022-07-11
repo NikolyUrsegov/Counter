@@ -1,0 +1,24 @@
+.buttonBlock {
+    display: flex;
+    width: 80%;
+    height: 40%;
+    margin: 20px auto;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid rgb(99, 218, 252);
+    border-radius: 10px;
+}
+.button  {
+    width: 150px;
+    height: 50px;
+    margin: 10px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    background-color: rgb(99, 218, 252);
+    font-size: 30px;
+}
+.disabledBtn {
+    pointer-events: none;
+    opacity: 0.5;
+}
