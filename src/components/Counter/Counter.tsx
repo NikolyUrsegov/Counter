@@ -2,47 +2,35 @@ import React, {useState} from 'react';
 import Panel from "./Panel/Panel";
 import ButtonBlock from "./ButtonBlock/ButtonBlock";
 import s from './Counter.module.css'
+import {InitialStateType} from "../../redux/reducer";
 
 type CounterPropsType = {
-    counter: number
-    setCounter: (value: number) => void
-    startValue?: number
-    maxValue?: number
-    valueCounter: {
-        startValue: number
-        maxValue: number
-    }
-    getCounterValue?: (key: string) => void
-    informSpan: string
+    clickCounter: () => void
+    state: InitialStateType
+    resetCounter: () => void
 }
 
 const Counter = (props: CounterPropsType) => {
     const onClickIncHandler = () => {
-        props.counter < props.valueCounter.maxValue && props.setCounter(props.counter + 1)
+        props.state.counter < props.state.maxValue && props.clickCounter()
     }
     const onClickResetHandler = () => {
-        props.setCounter(props.valueCounter.startValue)
+        props.resetCounter()
     }
-
-    // const getCounterValueHandler = () => {
-    //     props.getCounterValue('counter')
-    //     props.setCounter(props.startValue)
-    // }
 
     return (
         <div className={s.container}>
             <Panel
-                informSpan={props.informSpan}
-                maxCounter={props.valueCounter.maxValue}
-                counter={props.counter}/>
+                informSpan={props.state.error}
+                maxCounter={props.state.maxValue}
+                counter={props.state.counter}/>
             <ButtonBlock
-                informSpan={props.informSpan}
-                counter={props.counter}
-                startValue={props.valueCounter.startValue}
-                maxCounter={props.valueCounter.maxValue}
+                informSpan={props.state.error}
+                counter={props.state.counter}
+                startValue={props.state.startValue}
+                maxCounter={props.state.maxValue}
                 clickInc={onClickIncHandler}
                 clickRes={onClickResetHandler}/>
-            {/*<button onClick={getCounterValueHandler}>get</button>*/}
         </div>
     );
 };

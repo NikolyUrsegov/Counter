@@ -1,76 +1,56 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useReducer} from 'react';
 import './App.css';
 import Counter from "./components/Counter/Counter";
 import SetCounter from "./components/SetCounter/SetCounter";
+import {
+    ChangeMaxValueAC,
+    ChangeStartValueAC,
+    CounterAC,
+    ErrorAC,
+    reducer,
+    SetValueAC
+} from "./redux/reducer";
 
 function App() {
-    const [counter, setCounter] = useState<number>(0);
-    const [valueCounter, setValueCounter] = useState({
+    const [state, dispatchToValue] = useReducer(reducer, {
+        maxValue: 5,
         startValue: 0,
-        maxValue: 5
+        counter: 0,
+        changeMaxValue: 0,
+        changeStartValue: 0,
+        error: ''
     })
-    const [startValue, setStartValue] = useState<number>(0);
-    const [maxValue, setMaxValue] = useState<number>(5);
-    const [informSpan, setInformSpan] = useState<string>('')
+    const changeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatchToValue(ChangeMaxValueAC(+e.currentTarget.value));
+    }
+    const changeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatchToValue(ChangeStartValueAC(+e.currentTarget.value))
+    }
 
+    const setCounterValue = () => {
+        dispatchToValue(SetValueAC())
+        dispatchToValue(ErrorAC(''))
+    }
 
-    useEffect(() => {
-        let state
-        const stateStore = localStorage.getItem('counter')
-        if (stateStore !== null) {
-            state = JSON.parse(stateStore)
-            setStartValue(state.start)
-            setMaxValue(state.max)
-            setCounter(state.start)
-            // setStartValueCounter(state.start)
-            // setMaxValueCounter(state.max)
-            setValueCounter({
-                startValue: state.start,
-                maxValue: state.max
-            })
-        }
-    }, [informSpan])
-
-    // const getCounterValue = (key: string) => {
-    //     let state
-    //     const stateStore = localStorage.getItem(key)
-    //     if (stateStore !== null) {
-    //         state = JSON.parse(stateStore)
-    //         setStartValueCounter(state.start)
-    //         setMaxValueCounter(state.max)
-    //         setInformSpan('')
-    //     }
-    // }
-    const setCounterValue = (key: string) => {
-        console.log("set")
-        const preferenceCounter = {
-            max: maxValue,
-            start: startValue
-        }
-        const counter = JSON.stringify(preferenceCounter)
-        localStorage.setItem(key, counter)
-        setInformSpan('')
+    const clickCounter = () => {
+        dispatchToValue(CounterAC(state.counter + 1))
+    }
+    const resetCounter = () => {
+        dispatchToValue(CounterAC(state.startValue))
     }
 
     return (
         <div className={'wrapper'}>
             <SetCounter
-                informSpan={informSpan}
-                setInformSpan={setInformSpan}
-                maxValue={maxValue}
-                startValue={startValue}
+                state={state}
+                changeMaxValueHandler={changeMaxValueHandler}
+                changeStartValueHandler={changeStartValueHandler}
                 setCounterValue={setCounterValue}
-                setStartValue={setStartValue}
-                setMaxValue={setMaxValue}
             />
             <Counter
-                counter={counter}
-                setCounter={setCounter}
-                valueCounter={valueCounter}
-                // maxValue={maxValueCounter}
-                // startValue={startValueCounter}
-                // getCounterValue={getCounterValue}
-                informSpan={informSpan}
+                state={state}
+                clickCounter={clickCounter}
+                resetCounter={resetCounter}
             />
         </div>
     );

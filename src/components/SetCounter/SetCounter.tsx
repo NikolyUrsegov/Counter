@@ -2,30 +2,28 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import PreferencePanel from "./PreferencePanel/PreferencePanel";
 import SetButtonPreference from "./SetButtonPreference/SetButtonPreference";
 import s from './SetCounter.module.css'
+import {InitialStateType} from "../../redux/reducer";
 
 type setCounterPropsType = {
-    informSpan: string
-    maxValue: number
-    startValue: number
-    setStartValue: (value: number) => void
-    setMaxValue: (value: number) => void
-    setCounterValue: (key: string) => void
-    setInformSpan: (value: string) => void
+    state: InitialStateType
+    changeMaxValueHandler: (e: ChangeEvent<HTMLInputElement>) => void
+    changeStartValueHandler: (e: ChangeEvent<HTMLInputElement>) => void
+    setCounterValue: () => void
 }
 const SetCounter = (props: setCounterPropsType) => {
     return (
         <div className={s.container}>
             <PreferencePanel
-                informSpan={props.informSpan}
-                setInformSpan={props.setInformSpan}
-                maxValue={props.maxValue}
-                startValue={props.startValue}
-                setMaxValue={props.setMaxValue}
-                setStartValue={props.setStartValue}
+                informSpan={props.state.error}
+                maxValue={props.state.changeMaxValue}
+                startValue={props.state.changeStartValue}
+                changeMaxValueHandler={props.changeMaxValueHandler}
+                changeStartValueHandler={props.changeStartValueHandler}
             />
             <SetButtonPreference
-                informSpan={props.informSpan}
-                setCounterValue={props.setCounterValue}/>
+                informSpan={props.state.error}
+                setCounterValue={props.setCounterValue}
+            />
         </div>
     );
 };
