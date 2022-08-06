@@ -1,5 +1,3 @@
-import React from "react";
-
 export type InitialStateType = {
     maxValue: number
     startValue: number
@@ -13,7 +11,7 @@ let initialState: InitialStateType = {
     maxValue: 5,
     startValue: 0,
     counter: 0,
-    changeMaxValue: 0,
+    changeMaxValue: 5,
     changeStartValue: 0,
     error: ''
 }
@@ -29,8 +27,16 @@ export function reducer(state: InitialStateType = initialState, action: ActionTy
             }
         }
         case "COUNTER": {
+            return state.counter < state.maxValue
+                ? {
+                    ...state, counter: state.counter + 1
+                }
+                : {...state}
+
+        }
+        case "RESET_COUNTER": {
             return {
-                ...state, counter: action.payload.value
+                ...state, counter: state.startValue
             }
         }
         case "ERROR": {
@@ -90,6 +96,7 @@ type ActionTypes =
     | ErrorACType
     | ChangeMaxValueACType
     | ChangeStartValueACType
+    | ResetCounterACType
 export type SetValueACType = ReturnType<typeof SetValueAC>
 export const SetValueAC = () => {
     return {
@@ -98,12 +105,16 @@ export const SetValueAC = () => {
 }
 
 export type CounterACType = ReturnType<typeof CounterAC>
-export const CounterAC = (value: number) => {
+export const CounterAC = () => {
     return {
-        type: 'COUNTER',
-        payload: {
-            value: value
-        }
+        type: 'COUNTER'
+    } as const
+}
+export type ResetCounterACType = ReturnType<typeof ResetCounterAC>
+export const ResetCounterAC = () => {
+    return {
+        type: 'RESET_COUNTER'
+
     } as const
 }
 export type ErrorACType = ReturnType<typeof ErrorAC>

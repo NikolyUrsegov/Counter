@@ -1,30 +1,34 @@
-import React from 'react';
+import React, {memo, useCallback} from 'react';
 import Button from "../../Button";
 import s from './ButtonBlock.module.css'
+import {useDispatch} from "react-redux";
+import {CounterAC, ResetCounterAC} from "../../../redux/reducer";
 
 type IncResPropsType = {
-    counter: number
-    maxCounter: number
-    startValue: number
-    clickInc: () => void
-    clickRes: () => void
-    informSpan: string
+    incBtnClass: string
+    resetBtnClass: string
 }
 
-const ButtonBlock = (props: IncResPropsType) => {
-    const incBtn = props.counter < props.maxCounter && !props.informSpan ? s.button : `${s.button} ${s.disabledBtn}`
-    const resetBtn = props.counter !== props.startValue && !props.informSpan ? s.button : `${s.button} ${s.disabledBtn}`
+const ButtonBlock = memo((props: IncResPropsType) => {
+    const dispatch = useDispatch()
+
+    const onClickIncHandler = useCallback(() => {
+        dispatch(CounterAC())
+    }, [dispatch])
+    const onClickResetHandler = useCallback(() => {
+        dispatch(ResetCounterAC())
+    }, [dispatch])
 
     return (
         <div className={s.buttonBlock}>
             <Button name={'inc'}
-                    callBack={props.clickInc}
-                    class={incBtn}/>
+                    callBack={onClickIncHandler}
+                    class={props.incBtnClass}/>
             <Button name={'reset'}
-                    callBack={props.clickRes}
-                    class={resetBtn}/>
+                    callBack={onClickResetHandler}
+                    class={props.resetBtnClass}/>
         </div>
     );
-};
+});
 
 export default ButtonBlock;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 
 type ButtonPropsType = {
     name: string
@@ -6,9 +6,9 @@ type ButtonPropsType = {
     class: string
 }
 
-const Button = (props: ButtonPropsType) => {
+const Button = memo((props: ButtonPropsType) => {
     return <button className={props.class} onClick={props.callBack}>{props.name}</button>
-}
+})
 
 
 export default Button;
